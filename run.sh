@@ -47,7 +47,7 @@ case "$1" in
     ;;
     install)
 
-    DB='supla2';
+    DB='supla';
     DBPASS=`cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1`;
     SOCKET_PASS=`cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1`;
 
