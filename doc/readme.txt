@@ -1,7 +1,7 @@
 wymagania:
 postgresql, mosquito, apache, supla-mqtt-client
 
-git pull supla.ap-media.pl/supla-notify.git 
+git pull supla.ap-media.pl/supla-notify.git .
 ./run.sh install
 ./composer.phar install
 
