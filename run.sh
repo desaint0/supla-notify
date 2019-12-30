@@ -113,6 +113,8 @@ case "$1" in
     sudo -u postgres psql -c "GRANT all privileges on database ${DB} to ${DB}" 
     
     mkdir ${DIR}/templates_c
-    chown 33:33 ${DIR}/templates_c
+    mkdir ${DIR}/log
+    mkdir ${DIR}/vendor
+    chown 33:33 ${DIR} -R
     ;;
 esac
