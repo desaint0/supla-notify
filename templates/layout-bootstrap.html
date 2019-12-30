@@ -1,0 +1,109 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<!--// $Id$ //-->
+<html>
+    <head>
+        <title>{block name=title}::: Supla API Tool :::{/block}</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="GENERATOR" content="LMS {$layout.lmsv}">
+        <meta http-equiv="Content-Language" content="{$LANGDEFS.$_ui_language.html}">
+        <meta http-equiv="Content-Type" content="text/html; charset={$LANGDEFS.$_ui_language.charset}">
+            {include file="jquery.html" language=$LANGDEFS.$_ui_language.html}
+        <link href="img/bootstrap/css/bootstrap.css" rel="stylesheet" type="text/css">
+        <link href="templates/LmsWindowManager/css/LmsWindows-bootstrap.css?date=2018013003" rel="stylesheet" type="text/css">
+        <link href="img/lms-net.gif" rel="shortcut icon">
+
+         {block name="extra-css-styles"}{/block}
+        <script type="text/javascript" src="img/popper.min.js"></script>
+        <script type="text/javascript" src="img/common.js"></script>
+        <script type="text/javascript" src="img/SearchField.js"> </script>
+        <script type="text/javascript" src="img/ClickShowHideMenu.js"></script>
+        <script type="text/javascript" src="img/overlib.js"></script>
+        <script type="text/javascript" src="img/bootstrap/js/bootstrap.js"></script>
+        <script type="text/javascript" src="img/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+        <script type="text/javascript" src="img/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.pl.js"></script>
+        <script type="text/javascript" src="templates/LmsWindowManager/js/LMSWindows.js?date=2018013000"> </script>
+    </head>
+    <body  class="prbody">
+	   <div class="content-area container table-responsive text-center">
+       <div id="lmswstatus" >
+            <div id='lmswstatusinside' class="table-responsive">
+                    <div id=alertglobaltable {if $error.global || $errorSession.global}{else}style='display:none'{/if} class="font-weight-bold rounded">
+                        <div class="alert table-danger border-danger rouded text-danger font-weight-bold" style='display:{if $error.global || $errorSession.global}{else}none{/if}'> 
+                        {if $error.global || $errorSession.global}
+                            <img src=templates/LmsWindowManager/css/error.png>                        
+                            <span >{if $error.global|@is_array}{$error.global.0}{else}{$error.global}{/if}
+{if $errorSession.global|@is_array}{$errorSession.global.0}{else}{$errorSession.global}{/if}                            
+                            </span>
+                        {/if}
+                        </div>
+                    </div>
+            </div>
+        </div>
+        </div>
+{assign var=csstype value='bootstrap'}
+<div id="header-wrapper">
+        <div class="container">
+		<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+        	<a class="navbar-brand" href="#">SUPLA:</a>
+        	<button class="navbar-toggler d-lg-none" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+          		<span class="navbar-toggler-icon"></span>
+        	</button>
+
+        	<div class="collapse navbar-collapse" id="navbarsExampleDefault">
+          		<ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <a id=menu_ href=? class="btn btn-success btn-sm">Strona główna</a>
+                    </li>&nbsp;
+            {block name=menu}
+            {/block}
+                    <li class="nav-item active">
+                        <a id=menu_ href=?m=logout&is_sure=1 class="btn btn-danger btn-sm">wyloguj</a>
+                    </li>
+          		</ul>
+                <div class=" text-muted">
+                    <small>Zalogowany jako: <B>{$layout.username}</B></small><BR>
+                    <small>SUPLA actions v. {$layout.version}</small>&nbsp;&nbsp;
+                </div>
+                <div class="col-md-0"></div>
+                <div class="col-md-1">
+                    <div id=lmswprogressbar style='display:none' class='lmswprogressbig'></div>
+                </div>
+                <div style='width:5px'></div>
+       		</div>
+    {if ConfigHelper::getConfig('socket.enabled')}
+    <div class="text-left text-center lmswstatus" width=80 onmouseover=addClass(this,'lmswstatuso'); onmouseout=removeClass(this,'lmswstatuso');>
+        <div id=WebSocketStatus class="text-center hand" title="WebSocket Status"><img src=img/ws.png></div>
+    </div>
+    {/if}
+            
+	    		<div class="mt-2 mt-md-0 ml-1" style="border: 1px" id="pagecontainer2" >
+              		<div id="lmswsesstimer" class="clock hand" title="Pozostały czas do wygaśnięcia sesji. Kliknij, aby zresetować sesje." onclick="ResetTimeout();"></div>
+	    		</div>
+      	</nav>
+	</div>
+</div>
+<div id="overDiv" style="position:absolute; visibility:hidden; z-index:10009;"></div>
+	<div id="primary" class="content-area p-2 table-responsive">
+
+            {if $layout.popup}
+                {block name=module_content}{/block}
+            {else}
+                <div id="pagecontainer">
+        
+                {$xajax}
+                {$lmswin_xajax}
+            </div>
+            {/if}
+
+            {block name=pagecontent}
+                <div id="lms-ui-spinner" onclick="$('div#lms-ui-spinner').hide();">
+                    <div class="lmswprogressbar lmswprogresspage"></div>
+                </div>
+                <BR>
+                <div id="pagecontent">
+                    {block name=module_content}{/block}
+                </div>
+            {/block}
+   </div>    
+    </body>
+</html>

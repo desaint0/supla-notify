@@ -1,0 +1,312 @@
+            <a href=javascript:void() class="btn btn-sm btn-info" onclick="Add('supla_conditions',true);">Dodaj warunek <img src=img/add.gif {tip text="dodaj warunek"}></a>
+            <a href=javascript:void() class="btn btn-sm btn-success" onclick="xajax_MQTTSave(JSON.stringify(SuplaCond));">Zapisz <img  src=img/save.gif {tip text="zapisz"}></a><BR>
+<BR>
+<TABLE border=0 class="table " cellspacing=4 cellpadding=4>
+    <TD colspan=1 class="small text-right">
+        filtruj: 
+    </TD>
+    <TD class="form-inline">
+        <input type=text name=search id=condSearch class=" form-control form-control-sm " value='' onkeyup="SearchChannelsCond.onKeyUp(this,event);" autocomplete=off>
+    </TD>
+</TR>
+<TR>
+    <TD class="valign-top" width=20%>
+        <div class="list-group" id=supla_conditionsload></div>
+        <div class="list-group" id=supla_conditions>
+        </div>
+    </TD>
+    <TD width=100%>
+    <form class="form-inline" id=supla_conditions-form name=supla_conditions-form>
+    <div class="border border-dark m-2" id=supla_conditions_data style='display:none;width:100%'>
+        <TABLE class="table small table-striped table-bordered bg-light" width=100%>
+            <TR class="table-warning">
+                <TD class="font-weight-bold valign-top">ID:</TD><TD class="font-weight-bold"><input type=hidden id=d_id name=id><div id=disp_id></div></TD>
+            </TR>
+            <TR class="table-success">
+                <TD class="font-weight-bold valign-top">Opis:</TD><TD class=""><input type=text id=d_description name=description size=100 class="form-control form-control-sm "></TD>
+            </TR>
+            <TR class="table-info">
+                <TD class="font-weight-bold valign-top" >Nazwa:</TD><TD><input type=text id=d_name name=name size=30 class="form-control form-control-sm"
+onkeyup="removeClass(document.getElementById('d_elem'),'alert-success');SearchChannels.onKeyUp(this,event);" onfocus="SearchChannels_onFocus(this);" onblur="SearchChannels.onBlur(this);" data-name="UpdateElement"                
+                ></TD>
+            </TR>
+            <TR>
+                <TD>Wyłączony</TD><TD><input type=checkbox id=d_disabled name=disabled class="form-control form-control-sm"></TD>
+            </TR>
+            <TR>
+                <TD>Anuluj akcje</TD><TD><input type=checkbox id=d_clear_actions name=clear_actions class="form-control form-control-sm"></TD>
+            </TR>
+            <TR>
+                <TD >Element: </TD><TD><input type=text size=10 id=d_elem name=elem class="form-control form-control-sm" onchange=removeClass(this,'alert-success');></TD>
+            </TR>
+            <TR>
+                <TD >Porównaj: </TD><TD>
+                    <select id=d_comp name=comp class="form-control-sm">
+                        <option value="<"><
+                        <option value="<="><=
+                        <option value="==">==
+                        <option value=">=">>=
+                        <option value=">" >>
+                    </select></TD>
+                </TR>
+            <TR>
+                <TD >Wartość: </TD><TD><input type=text size=3 id=d_value name=value class="form-control form-control-sm"></TD>
+            </TR>
+            <TR>
+                <TD >Reaguj na: </TD><TD>
+                <SELECT id=d_type name=d_type class="form-control-sm">
+                    <option value="S" >Stan
+                    <option value="C">zmiana
+                </select>
+                </TD>
+            </TR>
+            <TR>
+                <TD colspan=2 class="">
+                    <div id=supla_elements>
+                    </DIV>
+                <a href=javascript:void() class="btn btn-sm btn-info" onclick="SuplaElementsArr.AddElement(null);">Dodaj element <img src=img/add.gif {tip text="dodaj warunek"}></a>
+                </TD>
+            </TR>
+            <TR>
+                <TD colspan=2>
+                    <a href=javascript:void() onclick="SaveElem();" class="btn btn-sm btn-success">zapisz <img src=img/save.gif></a>
+                    <a href=javascript:void() onclick="document.getElementById('supla_conditions_data').style.display='none';" class="btn btn-sm btn-primary">anuluj <img src=img/cancel.gif></a>
+                    <a href=javascript:void() class="btn btn-sm btn-danger hand" onclick="Del();popclick();" onmouseover="popup('usuń');" onmouseout=popclick();>usuń <img src=img/delete.gif></a>
+                </TD>
+            </TR>
+
+        </TABLE>
+        </div>
+    </FORM>
+    </td>
+</TR>
+</TABLE>
+
+<div id=supla_elementsNew style='display:none'>
+    <TABLE class="table table-bordered">
+            <TR class="table-primary">
+                <TD rowspan=2 class="align-middle">
+                    <h2>#%id%</h2>
+                    <input type=hidden id=supla_elementsid%id% value='%elemid%'>
+                    <a href=javascript:void() class="btn btn-sm btn-danger hand" onclick="SuplaElementsArr.DelElement(%id%);popclick();" onmouseover="popup('usuń');" onmouseout=popclick();>usuń <img src=img/delete.gif></a>
+                </TD>
+                <TD class="align-middle"><h6><div class="badge badge-primary">warunek:</div></h6> <div id=d_condition%id% ></div></TD>
+            </TR>
+            <TR class="table-primary">
+                <TD class="align-middle"><h6><div class="badge badge-primary">akcja:</div></h6>
+                <div class="small "><FORM id="supla_actions-form%id%" name="supla_actions-form%id%"> <div id=supla_actions%id% class="list-group "></div></form>
+                <a href=javascript:void() class="btn btn-sm btn-info" onclick="SuplaElementsArr.AddAction('%id%',true,null);">Dodaj akcję <img src=img/add.gif {tip text="dodaj warunek"}></a>
+                </div>
+                </TD>
+            </TR>
+    </TABLE>
+</div>
+
+<div id=NewCond  style='display:none'>
+    <a href="#" class="list-group-item list-group-item-action list-group-item-info h6 small" onclick="setDisp(%id%);" id=supla_params%id% ><span id=supla_desc_%id%>%description% (#%id%)</span></a>
+</div>
+<div id=supla_actionsnew  style='display:none'>
+    %description%<input class="form-control form-control-sm" type=text name=actions value='%action%' size=50 data-name="actions-action" onkeyup="removeClass(this,'alert-success');SearchChannels.onKeyUp(this,event);" onfocus="SearchChannels_onFocus(this);" onblur="SearchChannels.onBlur(this);" >, 
+    wartość: <input type=text name=value value='%value%' class="form-control form-control-sm" size=5 data-name="actions-value">
+    opóźnienie: <input type=text name=delay value='%delay%' class="form-control form-control-sm" size=5 data-name="actions-delay">
+    <a href=javascript:void(); onclick="SuplaElementsArr.DelAction(this);" class="btn btn-sm btn-danger"><img src=img/delete.gif >usuń</a>
+</div>
+
+<div class=card id=SearchChannelsData2 style='display:none'>    
+    <div class="card-header p-1 pl-2 font-weight-bold bg-primary text-white"
+    onmouseout="SearchChannels.onMouseOut();" onmouseover="SearchChannels.onMouseOver();" 
+    >Lista wyników wyszukiwania</div>
+    <div class="bg-light border border-primary" onmouseout="SearchChannels.onMouseOut();" onmouseover="SearchChannels.onMouseOver();">
+        <div class="card-header-spacing"></div>
+        <div id=SearchChannelsData class="pl-2 pb-2 pr-2"></div>
+    </div>
+</div>
+
+<script>
+cId=0;
+SuplaCurrent=0;
+SuplaCond=new Array();
+SuplaElementsArr=new SuplaElements({ elem: 'supla', obj: 'SuplaElementsArr' });
+setDisp=function(id)
+    {
+        if(document.getElementById('supla_params'+SuplaCurrent))
+            removeClass(document.getElementById('supla_params'+SuplaCurrent),'active');
+        SuplaCurrent=id;
+        addClass(document.getElementById('supla_params'+SuplaCurrent),'active');
+
+        document.getElementById('supla_conditions_data').style.display='';
+        
+        $.each(SuplaCond[id], function(key,value)
+            {
+                if(document.getElementById('d_'+key))
+                    {
+                        if(document.getElementById('d_'+key).type=='checkbox')
+                            document.getElementById('d_'+key).checked=value>0 ? true : false;
+                        else
+                            document.getElementById('d_'+key).value=value;
+                    }
+                if(document.getElementById('disp_'+key))
+                    document.getElementById('disp_'+key).innerHTML=value;
+            }
+        );
+        document.getElementById('supla_elements').innerHTML='';
+        SuplaElementsArr=new SuplaElements({ elem: 'supla', obj: 'SuplaElementsArr' });
+        if(SuplaCond[id].elements)
+        for(var i=0;i<SuplaCond[id].elements.length;i++)
+            SuplaElementsArr.AddElement(SuplaCond[id].elements[i]);
+    }
+SaveElem=function()
+    {
+        var id=SuplaCurrent;
+        $.each(SuplaCond[id], function(key,value)
+            {
+                if(document.getElementById('d_'+key))
+                    {
+                        if(document.getElementById('d_'+key).type=='checkbox')
+                            eval('SuplaCond['+id+'].'+key+'='+document.getElementById('d_'+key).checked);
+                        else
+                            eval('SuplaCond['+id+'].'+key+'=\''+document.getElementById('d_'+key).value+'\'');
+                    }
+            }
+        );
+
+        document.getElementById('supla_conditions_data').style.display='none';
+        removeClass(document.getElementById('supla_params'+SuplaCurrent),'active');
+        if(SuplaCond[id].disabled)
+            addClass(document.getElementById('supla_params'+SuplaCurrent),'disabled');
+        else
+            removeClass(document.getElementById('supla_params'+SuplaCurrent),'disabled');
+
+        SuplaCond[id].elements=new Array();
+        for (var i=0; i<SuplaElementsArr.Q.length;i++)
+            {
+                var Q=SuplaElementsArr.Q[i].save();
+                SuplaCond[id].elements[i]={ };
+                SuplaCond[id].elements[i].condition=Q;
+                SuplaCond[id].elements[i].id=document.getElementById('supla_elementsid'+i) ? document.getElementById('supla_elementsid'+i).value : 0;
+                
+                document.getElementById('supla_desc_'+id).innerHTML=SuplaCond[id].description;
+                var action=document.getElementById('supla_actions'+i).querySelectorAll(`[data-name="actions-action"]`);
+                var delay=document.getElementById('supla_actions'+i).querySelectorAll(`[data-name="actions-delay"]`);
+                var values=document.getElementById('supla_actions'+i).querySelectorAll(`[data-name="actions-value"]`);
+                SuplaCond[id].elements[i].actions=new Array();
+                $.each(action, function(key,value) 
+                    {
+                        var e={ action : value.value, delay: delay[key].value, value:  values[key].value }
+                        SuplaCond[id].elements[i].actions.push(e);
+                    }
+                );
+            }
+    }             
+Add=function(f,del,c)
+    {
+        var elemvalue=c ? c : {
+            id: 0,
+            name: '', 
+            condition: '', 
+            elem:'', 
+            value: '', 
+            type: '', 
+            action : '', 
+            setValue:'', 
+            description: 'nowy warunek', 
+            disabled:true,
+            clear_actions: false,
+        };
+        if(!elemvalue.disabled)
+            elemvalue.disabled=false;
+        if(elemvalue.comp==undefined)
+            elemvalue.comp='';
+        par=document.getElementById(f);
+        var id=elemvalue.id;
+        zaw3=document.getElementById('NewCond').innerHTML;
+        zaw3=zaw3.replace(/%id%/gi,id);
+        zaw3=zaw3.replace(/%description%/gi,elemvalue.description);
+        par.innerHTML=par.innerHTML+zaw3;
+        SuplaCond[id]=elemvalue;
+        if(elemvalue.disabled!="0")
+            addClass(document.getElementById('supla_params'+id),'disabled');
+        else
+            removeClass(document.getElementById('supla_params'+id),'disabled');
+
+        cId+=1;
+    }
+Del=function()
+    {
+        par=document.getElementById('supla_conditions');
+        div=document.getElementById('supla_params'+SuplaCurrent);
+        par.removeChild(div);
+        document.getElementById('supla_conditions_data').style.display='none';
+        SuplaCond[SuplaCurrent]=null;
+    }  
+
+
+SearchChannelsE=null;
+
+SearchChannels_onFocus=function(elem)
+    {
+        SearchChannels=new SearchField(elem,0,'SearchChannelsData','SearchChannelsE.Search',200,'Brak wyników');
+        SearchChannels.onFocus(elem);
+    }
+
+QBE=JSON.parse('{Supla\Project\Cloud::getConfig()}');
+var QBEsTmp=[];
+var QBEpTmp=[];
+$.each(QBE.subscribe, function(k,value)
+    {
+        QBEsTmp.push(value);
+        var v=JSON.parse(JSON.stringify(value));
+        v.cmd=v.cmd+'.!lastUpdate!';
+        v.description=v.description+' - poprzednio zaktualizowany';
+        QBEsTmp.push(v);
+
+        var v=JSON.parse(JSON.stringify(value));
+        v.cmd=v.cmd+'.!currUpdate!';
+        v.description=v.description+' - ostatnio zaktualizowany';
+        QBEsTmp.push(v);
+    }
+);
+$.each(QBE.publish, function(k,value)
+    {
+        value.type='MQTT';
+        QBEpTmp.push(value);
+    }
+);
+var v={ };
+v.type='VIRTUAL';
+v.cmd='virtual_empty_action';
+v.description='Brak akcji';
+v.type_mqtt="publish";
+v.devname='--';
+v.payload= { virt : [1] };
+QBEpTmp.push(v);
+QBE.subscribe=JSON.parse(JSON.stringify(QBEsTmp));
+QBE.publish=JSON.parse(JSON.stringify(QBEpTmp));
+
+SearchChannelsE=new SearchChannelsClass(QBE,'SearchChannels');            
+
+UpdateElement=function()
+    {
+    }
+
+SearchChannelsCond=new SearchField(document.getElementById('condSearch'),0,'supla_conditions','SearchChannelsCondE',200,'Brak wyników');
+SearchChannelsCondE=function(q,name,opt,elem)
+    {
+        document.getElementById(name).innerHTML='';
+        for(var i=0;i<allConditions.length;i++)
+            {
+                var re = new RegExp(q,"gi");
+                if(re.exec(allConditions[i].description))
+                    Add(name,true,allConditions[i]);
+            }
+        document.getElementById(name+'load').innerHTML='';
+    }
+
+var allConditions=new Array();
+{foreach from=$mqttConfig item=item key=key}
+    allConditions.push({$item});
+    Add('supla_conditions',true,{$item});
+{/foreach}
+
+</script>
+

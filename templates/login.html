@@ -1,0 +1,82 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!--// $Id: login.html,v 1.56 2010/03/11 13:07:52 alec Exp $ //-->
+<html>
+<head>
+    <meta name="GENERATOR" content="::: Supla API Tool ::: {$layout.lmsv}">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="Content-Language" content="{$LANGDEFS.$_language.html}">
+    <meta http-equiv="Content-Type" content="text/html; charset={$LANGDEFS.$_language.charset}">
+        <link href="img/bootstrap/css/bootstrap.css" rel="stylesheet" type="text/css">
+    <link href="img/lms-net.gif" rel="shortcut icon">
+    <title>::: Supla API Tool {$layout.lmsv} :::</title>
+</head>
+<body style="padding-top: 1.0rem;" class="">
+
+<div class='container'>
+    <div class="card ">
+        <div class="card-header bg-primary text-center text-white" id='badlogin'>
+                <b>Zaloguj się</b>
+        </div>
+        <div class="card-body" style=''>
+			<form class="" method="post" name="loginform" action="{$target}" onsubmit="document.getElementById('loginbutton').style.display='none';document.getElementById('loginprogress').style.display='';">
+                <div class="row">
+                    <div class="col-sm-auto small text-center" style=''>
+    					{if $logo}
+                        <img src="{$logo}" width=200 alt="">
+                        {/if}
+                        <HR>
+                                ::: Supla API Tool :::<BR>
+                                v.{$version}<BR>
+                                (c) 2019 Paweł Bajorek
+                                <BR><BR>
+                    </div>
+                    <div class="col-sm-1"></div>
+					<div class="col-md-3 text-center " >
+                        <input type=submit style='display:none'>
+                        {if $doauth}
+							<div class="text-center alert text-danger">
+                                <b>Zły login lub hasło</b>
+							</div>
+                        {/if}
+                        {if $error}
+							<div class="text-center alert text-danger" id='badlogin'>
+                                <b>{$error}</b>
+							</div>
+                        {/if}
+                        <div class="small form-row">
+							<label class="col-sm-3 col-form-label" for=login><b>{t}Login:{/t}&nbsp;</b></label>
+							<div class="col-sm-6">
+                                <input type="TEXT" name="loginform[login]" size="10" accesskey="l" autofocus class="form-control form-control-sm" id=login><BR>
+                            </div>
+                        </div>                                        
+                        <div class="small form-row">
+							<label class="col-sm-3 col-form-label" for=password><b>Hasło&nbsp;</b></label>
+							<div class="col-sm-6">
+								<input type="PASSWORD" name="loginform[pwd]" size="10" class="form-control form-control-sm" id=password><br>
+                            </div>
+						</div>
+                        <div class="row">
+                            <div class="col-sm-3"></div>
+                            <div class="col-sm-2">
+								<a href=javascript:void(); id=loginbutton class="btn btn-success" name="loginform[submit]" onclick="document.getElementById('loginbutton').style.display='none';document.getElementById('loginprogress').style.display='';document.loginform.submit();"><div class="text-center col-md-4">{t}Zaloguj{/t}</div></a>
+                            </div>
+								
+                            <div id=loginprogress class="col" style='display:none'>
+                                <div class='btn btn-success'>trwa logowanie...</div>
+                                <div class='lmswprogressbar lmswprogressbigf'></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+			</form>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+<!--
+document.forms['loginform'].elements['loginform[login]'].focus();
+-->
+</script>
+</body>
+</html>

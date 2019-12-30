@@ -1,0 +1,246 @@
+<div class="container mb-2">
+<div class="row ">
+<div class="col-4 card-text align-left">
+    <a class="btn btn-xs btn-secondary btn-outline-secondary" id="edit-grid" href="#">Edytuj</a>&nbsp;
+    <a class="btn btn-xs btn-outline-secondary" id="space-grid" href="#">Schowaj Nav</a>&nbsp;
+</div>
+    <div class="form-inline col-4 text-left">
+     <a class="btn btn-xs btn-primary" id="save-grid" href="#">Zapisz układ</a>&nbsp;
+        <div class="small font-weight-bold " >Szablon:</div>&nbsp;<span id=templates></span>&nbsp;
+        <input type=text id=templateName value='' size=10 class=" form-control form-control-xs">
+    </div>
+</div>
+</div>
+
+<div class="row justify-content-md-left mb-2" id=scenes_settings style='display:none'>
+        <div class="col-1"  id=grid_settings>
+                <a href=javascript:void(); id=grid_panel_button class="btn btn-sm btn-outline-primary" onclick="suplaSetPanel('grid');SG2.EditGridInternal();SG.EditGridInternal(); ">sceny</a>
+        </div>
+        <div  id=grid2_settings class="col-1">
+                <a href=javascript:void(); id=grid2_panel_button class="btn btn-sm btn-outline-primary" onclick="suplaSetPanel('grid2'); SG.EditGridInternal();SG2.EditGridInternal(); ">kanały #1</a>
+        </div>
+        <div class="col-1" id=grid3_settings>
+                <a href=javascript:void(); id=grid3_panel_button class="btn btn-sm btn-outline-primary" onclick="suplaSetPanel('grid3');SG3.EditGridInternal();">kanały #2</a>
+        </div>
+
+<div class="card-text small font-weight-bold mb-2" id=SuplaChannelSizer>
+<label for="customRange1">Szerokość kolumn: </label>
+<input type="range" class="custom-range" id="SuplaChannelSizerVal" value=30 onchange="document.getElementById('grid_main').style.width=this.value+'%'; SG.EditGridInternal();SG2.EditGridInternal();">
+</div>
+</div>
+<TABLE border=0 class="table table-striped  table-bordered alert-light" cellspacing=1 cellpadding=1 width=100%>
+    <TR>
+        <TD width=40%  class="" id=grid_main>
+            <div class="text-right "><span class="small font-weight-bold text-dark nav-item nav-tabs pl-3 pr-3">sceny</span></div>
+            <div class="grid " id=grid>
+            </div>
+        </TD>
+        <TD id=grid2_main>
+            <div class="text-right"><span class="small p-1 font-weight-bold text-dark nav-item nav-tabs pl-3 pr-3">kanały #1</span></div>
+            <div class="grid2 " id=grid2>
+            </div>
+        </TD>
+    </TR>
+    <TR>
+        <TD id=grid3_main colspan=2 height=50>
+            <div class="text-right"><span class="small p-1 font-weight-bold text-dark nav-item nav-tabs pl-3 pr-3">kanały #2</span></div>
+            <div class="grid3 " id=grid3>
+            </div>
+        </TD>
+    </TR>
+</TABLE>
+
+<script type="text/javascript" src="templates/js/SuplaGrids.js"></script>
+<script>
+ElemContent=function(e) {
+    var ElemParams2=e;
+    for(var idx=0;idx<ElemParams2.length;idx++) {
+        var elemIdx=ElemParams2[idx].idx+'/'+ElemParams2[idx].type_id;
+        switch(ElemParams2[idx].type)
+            {
+                case 'CONTROLLINGTHEGATEWAYLOCK' :
+                    ElemParams2[idx].content=ElemParams2[idx]._description+'<div class=small><div class=" small ">#'+elemIdx+'</div><div class="hand btn btn-sm btn-success" onclick="SG2.ExecChannel(1,'+idx+');">otwórz </div></div>';
+                    break;    
+                case 'CONTROLLINGTHEGATE':
+                    ElemParams2[idx].content=ElemParams2[idx]._description+'<div class=small><div class=" small ">#'+elemIdx+'</div><div class="hand btn btn-sm btn-success" onclick="SG2.ExecChannel(1,'+idx+');">otwórz/zamknij </div></div>';
+                    break;    
+                case 'LIGHTSWITCH':
+                    ElemParams2[idx].content=ElemParams2[idx]._description+'<div class=small><div class=" small ">#'+elemIdx+'</div><div class="hand btn btn-sm btn-success" onclick="SG2.ExecChannel(1,'+idx+');">zapal </div> <div class="hand btn btn-sm btn-danger" onclick="SG2.ExecChannel(0,'+idx+');">zgaś</div></div>';
+                    break;
+                case 'THERMOMETER':
+                    ElemParams2[idx].content=ElemParams2[idx]._description+'<div class=small><div class=" small ">#'+elemIdx+'</div></div>';
+                    break;
+                default:    
+                    ElemParams2[idx].content=ElemParams2[idx]._description+'<div class=small><div class=" small ">#'+elemIdx+'</div><div class="hand btn btn-sm btn-success" onclick="SG2.ExecChannel(1,'+idx+');">włącz </div> <div class="hand btn btn-sm btn-danger" onclick="SG2.ExecChannel(0,'+idx+');">wyłącz</div></div>';
+            }
+    }
+    return ElemParams2;
+}
+
+// Config dla kanalow 'sceny'
+var ElemParams=new Array();
+var idx=0;
+{foreach from=$cfg item=item key=key}
+ElemParams[idx] = {
+    id: idx, 
+    hide: true,
+    content: '{$item.description}<div class="small" ><div class=" small ">#{$item.id}</div><div class="hand btn btn-sm btn-success" onclick="SG.ExecChannel(1,'+idx+');">wykonaj</div></div>',
+    cmd: 'scenes:{$item.id}',
+    idx: '{$item.id}',
+    etype: 'scenes',
+    height: 1,
+    width: 'suplaGridsSc',
+}
+idx++;
+{/foreach}
+SG=new SuplaGrids({
+    ExecChannelName: 'xajax_SuplaChannel',
+    SaveName: 'xajax_TemplatesSave',
+    ElemParams: ElemParams,
+    gridDivName: 'grid',
+    objName: 'SG',
+});
+SG.Run();
+
+// Config dla kanałów #1
+var ElemParams2=new Array();
+var idx=0;
+{foreach from=$cloud.subscribe item=sitem key=skey}
+ElemParams2[idx] = {
+    id: idx, 
+    hide: true,
+    content: '',
+    idx: '{$sitem.id}',
+    type_id: '{$sitem.type_id}',
+    etype: 'channel',
+    height: 2,
+    width: 'suplaGridsCh',
+    type: '{$sitem.type}',
+    _description : '{$sitem.description}',
+}
+idx++;
+{/foreach}
+ElemParams2=ElemContent(ElemParams2);
+
+SG2=new SuplaGrids({
+    ExecChannelName: 'xajax_SuplaChannel',
+    SaveName: 'xajax_TemplatesSave',
+    ElemParams: ElemParams2,
+    gridDivName: 'grid2',
+    objName: 'SG2',
+    showActions: true,
+});
+var tplDefault=SG2.Run();
+
+//Config dla kanałow #2
+var ElemParams3=new Array();
+var idx=0;
+{foreach from=$cloud.subscribe item=sitem key=skey}
+ElemParams3[idx] = {
+    id: idx, 
+    hide: true,
+    content: '',
+    idx: '{$sitem.id}',
+    type_id: '{$sitem.type_id}',
+    etype: 'channel',
+    height: 2,
+    width: 'suplaGridsCh',
+    type: '{$sitem.type}',
+    _description : '{$sitem.description}',
+}
+idx++;
+{/foreach}
+ElemParams3=ElemContent(ElemParams3);
+
+SG3=new SuplaGrids({
+    ExecChannelName: 'xajax_SuplaChannel',
+    SaveName: 'xajax_TemplatesSave',
+    ElemParams: ElemParams3,
+    gridDivName: 'grid3',
+    objName: 'SG3',
+    showActions: true,
+});
+var tplDefault=SG3.Run();
+
+//Koniec configów
+
+$('#edit-grid').click(function () { 
+    SG.EditGrid(); 
+    SG2.EditGrid();
+    SG3.EditGrid();
+    document.getElementById('scenes_settings').style.display=SG.Edited ? '' : 'none';
+    if(!SG.Edited)
+        xajax_getAllChannelsStatus();
+    
+} );
+SpaceGrid=function() {
+    var el=document.getElementById('header-wrapper');
+    el.style.display=el.style.display ? '' : 'none';
+    document.body.className=el.style.display ? '' : "prbody";
+    
+    var el=document.getElementById('pagecontent_menu');
+    el.style.display=el.style.display ? '' : 'none';
+}
+SpaceGrid();
+$('#save-grid').click(function() { SG.SaveGrid(); SG2.SaveGrid(); SG3.SaveGrid(); } );
+$('#space-grid').click(function() { SpaceGrid(); });
+
+suplaSetPanel=function(elem)
+    {
+        e=elem+'_main';
+        document.getElementById(e).style.display=document.getElementById(e).style.display ? '' : 'none';
+        suplaSetPanelBtn(elem);
+    }
+suplaSetPanelBtn=function(elem)
+    {
+        e=elem+'_main';
+        if(document.getElementById(e).style.display)
+            {            
+                removeClass(document.getElementById(elem+'_panel_button'),'btn-outline-primary');
+                addClass(document.getElementById(elem+'_panel_button'),'btn-secondary');
+            }
+        else
+            { 
+                removeClass(document.getElementById(elem+'_panel_button'),'btn-secondary');
+                addClass(document.getElementById(elem+'_panel_button'),'btn-outline-primary');
+            }
+        document.getElementById('grid_main').style.width=document.getElementById('SuplaChannelSizerVal').value+'%';
+    }    
+
+TemplatesLoad=function(t)
+    {
+        if(!t)
+            return;
+        var obj=['SG', 'SG2', 'SG3'];
+        for (var i=0;i<obj.length;i++)
+            {
+                xajax_TemplatesLoad(obj[i],t);
+                eval(obj[i]+'.SaveSelected(\''+t+'\');');
+            }
+        xajax_getAllChannelsStatus();
+    }
+xajax_TemplatesGet('templates','SG_',tplDefault);
+
+SuplaWebSocket=function()
+    {
+        var d= {
+            data: {
+                obj: ['SG2','SG3'],
+            },
+        }
+        WebSocketServerF.addQueue('SuplaChannels',d);
+    }
+
+if(WebSocketServerF.Authenticated=='true')
+    {
+        WebSocketServerF.delQueue('SuplaChannels');
+        SuplaWebSocket();
+    }
+WebSocketServerF.afterAuthCall('SuplaWebSocket();','SuplaChannels');
+
+if(scenesTimeout!==undefined)
+    clearTimeout(scenesTimeout);
+var scenesTimeout=setTimeout(function() {  }, 1000);
+xajax_getAllChannelsStatus();
+xajax_Ping();
+</script>

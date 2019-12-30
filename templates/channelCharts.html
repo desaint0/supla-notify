@@ -1,0 +1,90 @@
+{extends file="LmsWindowManager/BaseWindow.html"}
+                        {block name=LmsWindowManagerBody}
+<script>
+chl_id='{$lmsW.id}';
+chl_payload='{$lmsW.payload}';
+chl_time ='{$lmsW.time}';
+chl_grid= '{$lmsW.grid}';
+
+SuplaShowLogs=function()
+    {                        
+        SuplaScenes.ShowWindowXajax('Charts','_center',{ id: chl_id, payload: chl_payload, time: chl_time, grid: chl_grid, sort: 'asc' }, 'Wykres');
+    }
+</script>
+<h6><div class="badge badge-info">{$channel.devname} / {$channel.description}, #{$channel.id}/{$channel.cloud}:#{$channel.type_id}</div></h6>
+
+<table class="">
+    <tr class="">
+        <td class=""><div class="badge">pokaż wykres dla: </div></td>
+        {foreach from=$payload item=item key=key}
+            <td class=""><a class="btn btn-xs btn-danger {if $lmsW.payload==$key}active {/if}" href=javascript:void(); onclick="chl_payload='{$key}';SuplaShowLogs();">{$key}</a></td>
+        {/foreach}
+    </tr>
+</table>
+<TABLE >
+    <tr class="">
+        <td class=""><div class="badge">zakres czasu: </div></td>
+        {foreach from=$time item=item key=key}
+            <td class=""><a class="btn btn-xs btn-danger {if $lmsW.time==$item}active {/if}" href=javascript:void(); onclick="chl_time='{$item}'; SuplaShowLogs();">{$item}</a></td>
+        {/foreach}
+    </tr>
+</table>
+<TABLE >
+    <tr class="">
+        <td class=""><div class="badge">siatka: </div></td>
+        {foreach from=$grid item=item key=key}
+            <td class=""><a class="btn btn-xs btn-warning {if $lmsW.grid==$item}active {/if}" href=javascript:void(); onclick="chl_grid='{$item}';SuplaShowLogs();">{$item}</a></td>
+        {/foreach}
+    </tr>
+</table>
+<BR>
+<div id="container1" class="border border-secondary"></div>
+
+<script>
+var payload='{$lmsW.payload}';
+if(payload.match(/temperature/gi))
+    var chartType='areaspline';
+else
+    var chartType='bubble';
+
+var options=
+    { 
+        title : { text: '{$channel.devname} / {$channel.description}', },
+        xAxis : { title: 'czas', },
+        chartType : chartType,
+    }
+{if $lmsW.payload=='temperature'}
+options.useHTML=false;
+var series=
+    [
+        {
+            name: payload,
+            data: [
+            {foreach from=$logs item=item key=key} 
+                [{($item.time*1000)}, {$item.value}],
+            {/foreach}
+            ],
+        },
+    ];
+{else}
+options.useHTML=true;
+var series=
+    [
+        {
+            name: payload,
+            data: [
+            {foreach from=$logs item=item key=key}
+                { x: {($item.time*1000)}, y: {$item.value}, name: '{$item.timestamp}' },
+            {/foreach}
+            ],
+        },
+    ];
+{/if}
+
+var c=new Chart(options, series);
+c.Make();
+</script>
+
+            {/block}
+    {block name=LmsWindowManagerTfoot}
+    {/block}                        

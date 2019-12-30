@@ -1,0 +1,102 @@
+            <div id="lmswsearchinside" class=lmswnewwindow style='z-index:10002;position:absolute;display:none;'></div>
+            <div id="autosuggest"><ul><li></li></ul></div>
+            
+            <div id="lmswstatus" >
+                <div id="lmswstatusinside">
+                {block name=quicksearch}
+                <form method="post" name="quicksearch" action="?m=quicksearch" id="quicksearch">
+            <table width=100% border=0 cellspacing=0 cellpadding=4 class="lmswstatusbar lmswstatus">
+                <tr>
+                    <td nowrap id=lmswmenuParent style='display:none' class="hand lmswstatus" onmouseover=addClass(this,'lmswstatuso'); onmouseout=removeClass(this,'lmswstatuso');>
+                            <div id=lmswmenu class="hand"></div>
+                    </td>
+                    <td nowrap id=breakdownsParent class="lmswstatus hand text-center" style='display:none' onclick=showBreakdowns(); onmouseover="addClass(this,'lmswstatuso');popup('Lista aktywnych ważnych komunikatów.')" onmouseout="removeClass(this,'lmswstatuso');pophide();">
+                            <div id=breakdowns></div>
+                    </td>
+                    <td nowrap id=nagiosstatusParent class="hand lmswstatus text-center" style='display:none' onmouseover="addClass(this,'lmswstatuso');" onmouseout="removeClass(this,'lmswstatuso');">
+                        <div id=nagiosstatus></div>                    
+                    </td>
+                    
+                    <td nowrap id=smallsearchParent class="hand lmswstatus" style='display:none' onmouseover=addClass(this,'lmswstatuso'); onmouseout=removeClass(this,'lmswstatuso'); onclick="LmswSearchSet();">
+                        <div id=smallsearch >                                                
+                            <img src=templates/LmsWindowManager/css/search.png> <img src=templates/LmsWindowManager/css/arrow_right.png>
+                        </div>                    
+                    </td>
+                            <td class="nobr lmswstatus" nowrap id=quicksearchmodule style='display:none'>
+                                {include file='quicksearchcontents.html'}
+                                {* Enter key submit hack for IE *}
+                            </td>
+                    <td class="handt lmswstatus" nowrap id=lmswqueuesp onmouseover=addClass(this,'lmswstatuso'); onmouseout=removeClass(this,'lmswstatuso'); style='display:none'>
+                        <div id=lmswqueues></div>
+                    </td>
+                    <td width=98% ></td>
+                    <td nowrap colspan=5>
+                    </td>
+                    <td nowrap>
+                        <div id=lmswlog></div>
+                    </td>
+                    <td class="text-left" width=80 >
+                        <div id=lmswprogressbar style='display:none' class='lmswprogressbigf'></div>
+                    </td>
+
+                    {block name="lmsWstatusRight"}
+                    {/block}
+    
+    {if ConfigHelper::getConfig('socket.enabled')}
+    <td class="text-left text-center lmswstatus" width=80 onmouseover=addClass(this,'lmswstatuso'); onmouseout=removeClass(this,'lmswstatuso');>
+        <div id=WebSocketStatus class="text-center hand" title="WebSocket Status"><img src=img/ws.png></div>
+    </td>
+    {/if}
+
+                    <td class="text-left lmswstatus" width=80 id=lmswsesstimerp onmouseover=addClass(this,'lmswstatuso'); onmouseout=removeClass(this,'lmswstatuso');>
+                        <div id=lmswsesstimer class="lmswstatus clock hand" title="Pozostały czas do wygaśnięcia sesji. Kliknij, aby zresetować sesje." onclick=ResetTimeout();></div>
+                    </td>
+                    <td class="text-right lmswstatus" width=50 onmouseover=addClass(this,'lmswstatuso'); onmouseout=removeClass(this,'lmswstatuso');>
+                        <div id=logout class="hand ">
+                            <a href=javascript:void(); class="buttonlmswx hand" title="wyloguj" onClick="LmsWindowsManager.Question('{trans("Are you sure that you want to logout?")}','?m=logout&amp;is_sure=1');"><img src=templates/LmsWindowManager/css/shutdown.png></a>
+                        </div>
+                    </td>
+                    <td class="text-right lmswstatus" width=50 onmouseover=addClass(this,'lmswstatuso'); onmouseout=removeClass(this,'lmswstatuso');>
+                        <div id=settings class="hand" onclick="LmswSettingsWindow.ShowWindowXajax('LmswSettings','lmswstatusinside',0,'Ustawienia');LmswSettingsWindow.SetXYofEl(false,window.innerWidth/2-100,window.innerHeight/2-100);"  title="ustawienia">
+                            <img src=templates/LmsWindowManager/css/settings.png>
+                        </div>
+                    </td>
+                    <td id=lmswmenubar nowrap class="lmsWindowsManagerShow">
+                    </td>
+                </tr>
+            </table>
+            <table width=100% class="lmswstatusbar lmswstatus" cellpadding=0 cellspacing=0>
+                <tr>
+                {block name=lmswsettings_secondline}
+                {/block}
+                </tr>
+            </table>             
+                {/block}
+                    <table id=alertglobaltable cellspacing=0 cellpadding=2 border=0 {if $error.global || $errorSession.global}{else}style='display:none'{/if}>
+                    <tr><td id=alertglobal>
+                        <div class="alertLMSsolid" style='display:{if $error.global || $errorSession.global}{else}none{/if}'> 
+                        {if $error.global || $errorSession.global}
+                            <img src=templates/LmsWindowManager/css/error.png>                        
+                            <span class=hand onmouseout=pophide(); onmouseover="popup('{foreach from=$error.global item=item}{$item}<BR>{/foreach}{foreach from=$errorSession.global item=item}{$item}<BR>{/foreach}');">{if $error.global|@is_array}{$error.global.0}{else}{$error.global}{/if}
+{if $errorSession.global|@is_array}{$errorSession.global.0}{else}{$errorSession.global}{/if}                            
+                            </span>
+                        {/if}
+                        </div>
+                    </td>
+                    <td>
+                        <span id=lmswsupoutsend></span>                    
+                    </td>
+                    </tr>
+                    </table>
+                </form>
+                </div>
+            </div>
+
+<div id=lmswtlo>
+</div>
+<div id=lmswsupout style='display:none'>{$_lmswsupout}{if $layout.dberrors}
+			{foreach from=$layout.dberrors item=dberror}
+{t}Query:{/t} {$dberror.query}
+{t}Error:{/t} {$dberror.error}
+			{/foreach}
+{/if}</div>            

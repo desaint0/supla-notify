@@ -1,0 +1,43 @@
+{extends file="layout-bootstrap.html"}
+
+{block name=pagecontent prepend}
+<div id=pagecontent_menu>
+<ul class="nav nav-tabs">
+    {foreach from=$menu item=item key=key}
+        <script>
+            {if $key==0}SUPLA_MenuID='menu_{$key}';{/if}
+        </script>
+        <li class="nav-item"><a id=menu_{$key} href=javascript:void(); class="nav-link " onclick="xajax_{$item.xajax}('page_content');" {tip text="`$item.desc`"}>{$item.title}</a></li>&nbsp;
+    {/foreach}
+<BR>
+</div>
+{/block}
+{block name=module_content}
+<div id=page_content>
+<div id=fin></div>
+<div id=d_condition></div>
+<!--<div class="lmswprogressbar lmswprogressbigf"></div> -->
+</div>
+<span class=lmswprogressbarinpage><span id=SearchChannelsDataload></span></span>  
+
+<div class=card id=SearchChannelsData2 style='display:none'>    
+    <div class="hand card-header p-1 pl-2 font-weight-bold bg-primary text-white" >Lista wyników wyszukiwania</div>
+    <div class="bg-light border border-primary" onmouseout="SearchChannels.onMouseOut();" onmouseover="SearchChannels.onMouseOver();">
+        <div class="card-header-spacing"></div>
+        <div id=SearchChannelsData class="pl-2 text-dark pb-2 pr-2"></div>
+    </div>
+</div>
+<script src="templates/js/packery.js"></script>
+<script src="templates/js/Draggability.js"></script>
+
+<script type="text/javascript" src="templates/js/QueryBuilder.js"></script>
+<script type="text/javascript" src="templates/js/SearchChannels.js"></script>
+<script type="text/javascript" src="templates/js/SuplaElements.js"></script>
+    <script type="text/javascript" src="templates/js/highcharts.js"> </script>
+    <script type="text/javascript" src="templates/js/highcharts-more.js"> </script>
+    <script type="text/javascript" src="templates/js/exporting.js"> </script>
+    <script type="text/javascript" src="templates/js/MyHighcharts.js"> </script>
+
+<script>
+</script>
+{/block}

@@ -1,0 +1,77 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<!--// $Id$ //-->
+<html>
+    <head>
+        <title>{block name=title}::: LMS Provisioning Tool :::{/block}</title>
+        <meta name="GENERATOR" content="LMS {$layout.lmsv}">
+        <meta http-equiv="Content-Language" content="{$LANGDEFS.$_ui_language.html}">
+        <meta http-equiv="Content-Type" content="text/html; charset={$LANGDEFS.$_ui_language.charset}">
+            {include file="jquery.html" language=$LANGDEFS.$_ui_language.html}
+        <link href="{ConfigHelper::getConfig('phpui.style', 'img/style.css')}?date=2017090400" rel="stylesheet" type="text/css">
+        <link href="templates/LmsWindowManager/css/LmsWindows.css?date=2017071902" rel="stylesheet" type="text/css">
+        <link href="img/lms-net.gif" rel="shortcut icon">
+         {block name="extra-css-styles"}{/block}
+        <script type="text/javascript" src="img/common.js"></script>
+        <script type="text/javascript" src="img/ClickShowHideMenu.js"></script>
+        <script type="text/javascript" src="img/overlib.js"></script>
+        <script type="text/javascript" src="img/SearchField.js"></script>
+    </head>
+    <body>
+
+        {if !$lmsWindows}
+
+            <div id="overDiv" style="position:absolute; visibility:hidden; z-index:10009;"></div>
+            {if $layout.popup}
+                {block name=module_content}{/block}
+            {else}
+                <div id="pagecontainer">
+                {$xajax}
+                {$lmswin_xajax}
+            {/if}
+
+            {block name=menu}
+            {/block}
+            
+            {block name=pagecontent}
+                <div id="lms-ui-spinner" onclick="$('div#lms-ui-spinner').hide();">
+                    <div class="lmswprogressbar lmswprogresspage"></div>
+                </div>
+                <div id="pagecontent">
+                    {block name=module_content}
+<div class="text-center">
+    <img src=img/logo_apmedia.png> 
+</div>
+
+                    <table class="text-center" width=100% id=alertglobaltable cellspacing=0 cellpadding=2 border=0 {if $error.global}{else}style='display:none'{/if}>
+                    <tr><td id=alertglobal>
+                        <div class="alertLMSsolid" style='display:{if $error.global}{else}none{/if}'> 
+                        {if $error.global}
+                            <img src=templates/LmsWindowManager/css/error.png>                        
+                            <span class=hand>
+                                {if $error.global|@is_array}
+                                    {foreach from=$error.global item=item key=key}
+                                        {$item}<BR>
+                                    {/foreach}
+                                {else}
+                                    {$error.global}
+                                {/if}
+                            </span>
+                        {/if}
+                        </div>
+                    </td>
+                    <td>
+                        <span id=lmswsupoutsend></span>                    
+                    </td>
+                    </tr>
+                    </table>
+
+                    {/block}
+                </div>
+            {/block}
+            </div>
+        {/if}
+                {if $lmsWindows}                            
+                {block name=module_content}{/block}
+                {/if}
+    </body>
+</html>

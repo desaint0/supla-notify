@@ -1,0 +1,23 @@
+<a class=lmswborderh href=?m=rtqueueview2&id={$queueid}&s=0&owner=><span class=alertLMS {tip text="nowe"}>
+    {if $data[0].ile}{$data[0].ile}{else}0{/if}
+</span></a>
+
+<a class=lmswborderh href=?m=rtqueueview2&id={$queueid}&s=10&owner=><span class=statusBlue {tip text="wewnętrzne"}>
+    {if $data[10].ile}{$data[10].ile}{else}0{/if}
+</span></a>
+
+<a class=lmswborderh href=?m=rtqueueview2&id={$queueid}&s=1&owner=><span class=statusdownLMS {tip text="otwarte"}>
+    {if $data[1].ile}{$data[1].ile}{else}0{/if}
+</span></a>
+
+<a class=lmswborderh href=?m=rtqueueview2&id={$queueid}&s=9&owner=><span class=statusokLMS {tip text="zrobione"}>
+    {if $data[9].ile}{$data[9].ile}{else}0{/if}
+</span></a>
+
+<a class=lmswborderh href=?m=rtqueueview2&id={$queueid}&s=2&owner=><span class=statusGray {tip text="rozwiązane"}>
+    {if $data[2].ile}{$data[2].ile}{else}0{/if}
+</span></a>
+
+<a class=lmswborderh href=?m=rtqueueview2&id={$queueid}&s=-1&owner={$authid}><span class="statusWarning " {tip text="przypisane do mnie"}>
+    <span class="brown">{if $dataown}{$dataown}{else}0{/if}</span>
+</span></a>

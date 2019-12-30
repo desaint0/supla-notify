@@ -1,0 +1,65 @@
+{extends file="LmsWindowManager/BaseWindow.html"}
+                        {block name=LmsWindowManagerBody}
+<script>
+chl_id='{$lmsW.id}';
+chl_payload='{$lmsW.payload}';
+chl_time ='{$lmsW.time}';
+chl_grid= '{$lmsW.grid}';
+
+SuplaShowLogs=function()
+    {                        
+        SuplaScenes.ShowWindowXajax('Log','_center',{ id: chl_id, payload: chl_payload, time: chl_time, grid: chl_grid }, 'Log');
+    }
+</script>
+<h6><div class="badge badge-info">{$channel.devname} / {$channel.description}, #{$channel.id}/{$channel.cloud}:#{$channel.type_id}</div></h6>
+
+<table class="">
+    <tr class="">
+        <td class=""><div class="badge">pokaż logi dla: </div></td>
+        {foreach from=$payload item=item key=key}
+            <td class=""><a class="btn btn-xs btn-danger {if $lmsW.payload==$key}active {/if}" href=javascript:void(); onclick="chl_payload='{$key}';SuplaShowLogs();">{$key}</a></td>
+        {/foreach}
+    </tr>
+</table>
+<TABLE >
+    <tr class="">
+        <td class=""><div class="badge">zakres czasu: </div></td>
+        {foreach from=$time item=item key=key}
+            <td class=""><a class="btn btn-xs btn-danger {if $lmsW.time==$item}active {/if}" href=javascript:void(); onclick="chl_time='{$item}'; SuplaShowLogs();">{$item}</a></td>
+        {/foreach}
+    </tr>
+</table>
+<TABLE >
+    <tr class="">
+        <td class=""><div class="badge">siatka: </div></td>
+        {foreach from=$grid item=item key=key}
+            <td class=""><a class="btn btn-xs btn-warning {if $lmsW.grid==$item}active {/if}" href=javascript:void(); onclick="chl_grid='{$item}';SuplaShowLogs();">{$item}</a></td>
+        {/foreach}
+    </tr>
+</table>
+<BR>
+<table class="table table-bordered table-striped ">
+<thead class="thead-dark small">
+    <tr >
+        <th scope="col">#</Th>
+        <th scope="col">czas</Th>
+        <th scope="col">wartość</TH>
+    </TR>
+</thead>
+    {foreach from=$logs item=item key=key}
+    <tr class="small">
+        <td>
+            {($key+1)}
+        </td>
+        <td>
+            {$item.timestamp|date_format:"%Y/%m/%d %H:%M:%S"}
+        </td>
+        <TD>
+            {$item.value}
+        </TD>
+    </tr>
+    {/foreach}
+</table>                
+                        {/block}
+    {block name=LmsWindowManagerTfoot}
+    {/block}                        

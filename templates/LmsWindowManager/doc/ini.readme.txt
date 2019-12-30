@@ -1,0 +1,3 @@
+phpui.nagios_status - pokaz status nagiosa na pasku stanu
+phpui.queue_breakdown_id - jesli>0, pokazuje na pasku stanu ilosc otwartych zgloszen z tej kolejki (np jakies duze awarie...)
+phpui.supout_email - adres email na ktory moga byc wyslane dzienniki bledow (po kliknieciu w ikone)

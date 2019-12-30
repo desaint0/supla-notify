@@ -1,0 +1,55 @@
+{block name=LmsWindowManagerHeader}
+{/block}
+
+    <div class="border border-secondary ">
+<TABLE class="table bg-light table-sm" style='' onmouseup={$lmsWindows.jsFunc}.WM.SetWindowOnTop({$lmsWindows.jsFunc}.baseWindow);>
+    <THEAD>
+        <TR class="bg-info move" onmousedown={$lmsWindows.jsFunc}.StartMove(this); onmouseup={$lmsWindows.jsFunc}.StopMove(this); class='move'>
+            <TD colspan=1 class="">
+                <input type=hidden name=service_id value='{$lmsWindows.current_id}'>
+                {block name=LmsWindowManagerTitle1}
+                    <B>{$lmsWindows.description}</B>
+                {/block}
+            </TD>
+            <TD colspan=1 class='text-right move'>
+                {if $lmsWindows.TitleImg}
+                    <img src={$lmsWindows.TitleImg} width=40>
+                {/if} 
+            <a class="btn btn-light btn-sm hand" onclick={$lmsWindows.jsFunc}.HidePanel(); title='zamknij'><img src=templates/LmsWindowManager/css/close.png></a>
+            </TD>
+        </TR>
+    </THEAD>
+    <TBODY>
+        <TR >
+            <TD colspan=2 class="">
+                        {if $LmsWindowsIncludeContent}
+                            {$LmsWindowsIncludeContent}
+                        {/if}
+                        {block name=LmsWindowManagerBody}
+                        {/block}
+            </TD>
+        </TR>
+    </TBODY>
+    {block name=LmsWindowManagerTfoot}
+    <TFOOT>
+        <TR class="bg-light">
+            <TD colspan=1 class="text-left" style='padding:10px'>
+                <a class="" href=javascript:void(); onclick="{$lmsWindows.jsFunc}.HidePanel();" title='Anuluj'>&nbsp<img src=img/cancel.gif> anuluj&nbsp</a>
+            </TD>
+            <TD colspan=1 class=text-right>
+            {block name=LmsWindowsManagerSaveButton}
+                <a class="" href=javascript:void(); onclick="{$lmsWindows.jsFunc}.Load();{$lmsWindows.jsFunc}.CallXajax('{$execFunc}','{$lmsWindows.refreshFname}','{$lmsWindows.refreshId}');" title='wykonaj'>&nbsp<img src=img/save.gif> 
+                {block name=LmsWindowsManagerSaveButtonTxt}
+                    zmień 
+                {/block}
+                &nbsp</a>
+            {/block}
+            </TD>
+        </TR>
+    </TFOOT>
+    {/block}
+</TABLE>
+    </div>
+
+{block name=LmsWindowManagerFooter}
+{/block}

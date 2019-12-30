@@ -1,0 +1,47 @@
+{extends file="LmsWindowManager/BaseWindow.html"}
+    {block name=LmsWindowManagerHeader}
+    <script type="text/javascript" src="templates/LmsWindowManager/js/ShmManager.js"> </script>
+    <script>
+        var docid='{$docid}';
+        var docconfirmed='{$docconfirmed}';
+        var p={
+            id: {ShmManager::shmLog},
+            key: {ShmManager::shmConfirmDoc}+{$userid*100},
+            hash: '{$shmhash}',
+            shmtype : '{$shmtype}',
+            confirmProgress: 'confirmprogress',
+            dataLog: 'confirmDocLog',
+        }
+        var ShmMgm=new ShmMgmClass(p);
+        APLMSDoc_CallBack=function()
+            {
+                document.getElementById('savefvprogressend').innerHTML="<a class=\"hand buttonc\" onclick={$lmsWindows.jsFunc}.HidePanel(); title='zamknij'>zamknij</a>";
+            }
+        if(!docconfirmed)
+            ShmMgm.CheckShm();
+        APLMSDoc.CallXajax('?m=documentedit&id={$docid}&action=confirm&shmtime={$shmtime}&shmtype={$shmtype}');
+
+
+    </script>
+    {/block}
+    
+    {block name=LmsWindowManagerBody}
+    <TR><TD>
+    Zatwierdzanie dokumentu: {$docid}
+    <div id=confirmDocLog>{if $docconfirmed}<B>Dokument jest już zatwierdzony.</B>{/if}</div>
+    {if !$docconfirmed}
+    <div id=confirmprogress class="lmswprogressbar lmswprogresssmall"></div>
+    {/if}
+    </TD>
+    </TR>    
+    {/block}
+
+    {block name=LmsWindowManagerTfoot}
+        <TFOOT>
+        <TR class="lmswtitle">
+            <TD colspan=2 class="text-left" style='padding:10px'>
+                <div id=savefvprogressend class='text-center'></div>
+            </TD>
+        </TR>
+        </TFOOT>
+    {/block}

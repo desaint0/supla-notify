@@ -1,0 +1,99 @@
+{extends file="LmsWindowManager/BaseWindow.html"}
+
+                        {block name=LmsWindowManagerBody}
+<script>
+{literal}
+    
+document.getElementById('lmswSettingsSearch').checked=document.getElementById('smallsearchParent').style.display=='' ? true : false ;
+document.getElementById('lmswSettingsBreakDowns').checked=document.getElementById('breakdownsParent').style.display=='' ? true : false ;
+document.getElementById('lmswSettingsNagios').checked=document.getElementById('nagiosstatusParent').style.display=='' ? true : false ;
+document.getElementById('lmswSettingsMenu').checked=document.getElementById('lmswmenuParent').style.display=='' ? true : false ;
+document.getElementById('lmswSettingsQueues').checked=getCookie('lmswSettingsQueues')=='1' ? true : false ;
+{/literal} 
+</script>
+<table cellspacing=5 cellpadding=5 border=0>
+    <tr>
+        <td>
+            <span class="lmswsearch"></span> 
+        </td>
+        <td>
+            wyszukiwarka - zaznacz, jeśli chcesz w formie skróconej: 
+        </td>
+        <td>
+            <input type=checkbox id=lmswSettingsSearch onchange="lmswSearchAction(this.checked); setCookie('lmswSettingsSearch',(this.checked ? '1' : '0'));">
+        </td>
+    </tr>
+    {if ConfigHelper::getConfig('phpui.queue_breakdown_id')>0}
+    <tr>
+        <td>
+            <img src=img/ticket.gif>
+        </td>
+        <td>
+            komunikaty o awariach: 
+        </td>
+        <td>
+            <input type=checkbox id=lmswSettingsBreakDowns onchange="LmswStatus_BreakDowns(this.checked); setCookie('lmswSettingsBreakDowns',(this.checked ? '1' : '0'));">
+        </td>
+    </tr>
+    {/if}
+    {if ConfigHelper::getConfig('phpui.nagios_status')>0}
+    <tr>
+        <td>
+            <img src=img/nagios.gif>
+        </td>
+        <td>
+            Stan sieci z Nagiosa: 
+        </td>
+        <td>
+            <input type=checkbox id=lmswSettingsNagios onchange="LmswStatus_NagiosStatus(this.checked); setCookie('lmswSettingsNagios',(this.checked ? '1' : '0'));">
+        </td>
+    </tr>
+    {/if}
+    <tr>
+        <td>
+            <img src=templates/LmsWindowManager/css/menu.png>
+        </td>
+        <td>
+            Wyglad Menu (zaznaczony - ukryte): 
+        </td>
+        <td>
+            <input type=checkbox id=lmswSettingsMenu onchange="ChangeMenu(this.checked); setCookie('lmswSettingsMenu',(this.checked ? '1' : '0'));">
+        </td>
+    </tr>
+    {if ConfigHelper::getConfig('socket.enabled')}
+    <tr>
+        <td>
+            <img src=img/ticket.gif>
+        </td>
+        <td>
+            Pokaż statusy kolejki: 
+        </td>
+        <td>
+            <input type=checkbox id=lmswSettingsQueues onchange="setCookie('lmswSettingsQueues',(this.checked ? '1' : '0')); LmswStatusQueuesRun();                         savePersistentSettings({ lmswSettingsQueues: this.checked ? '1' : '0' });
+">
+            <select id=lmswSettingsQueuesId onchange="setCookie('lmswSettingsQueuesId',this.value);LmswStatusQueuesRun({ reset:true }); savePersistentSettings({ lmswSettingsQueuesId: this.value });">
+                <option value=0>-- wybierz --
+                {foreach from=$rtqueues item=item key=key}
+                <option value='{$item.id}'>{$item.name}
+                {/foreach}
+            </select>
+        </td>
+    </tr>
+    {/if}
+    {block name="table"}
+    {/block}
+</table>                
+<script>
+if(getCookie('lmswSettingsQueuesId')>0)
+    {
+        for(i=0;i<document.getElementById('lmswSettingsQueuesId').options.length;i++)
+            if(document.getElementById('lmswSettingsQueuesId').options[i].value==getCookie('lmswSettingsQueuesId'))
+                document.getElementById('lmswSettingsQueuesId').options[i].selected=true;
+    }
+else
+    document.getElementById('lmswSettingsQueuesId').options[0].selected=true;
+    
+</script>
+                        {/block}
+    {block name=LmsWindowManagerTfoot}
+    {/block}                        

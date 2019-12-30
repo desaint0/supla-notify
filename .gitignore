@@ -1,0 +1,21 @@
+templates_c/*
+config.ini
+cache/*
+log/
+composer.phar
+composer.lock
+vendor/*
+
+# Temporary files
+*~
+*.swp
+*.swo
+
+# Object files
+*.o
+
+# Shared objects
+*.so
+
+# Executables
+

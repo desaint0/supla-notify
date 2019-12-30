@@ -1,0 +1,30 @@
+{
+    "name": "lmspt",
+    "description": "LMS Provisioning Tool",
+    "homepage": "http://www.ap-media.pl/",
+    "license": "GPL-2.0",
+    "repositories": [
+        {
+            "type": "package",
+            "package": {
+                "name": "xdan/datetimepicker",
+                "version": "2.5.4",
+                "dist": {
+                    "url": "https://github.com/xdan/datetimepicker/archive/2.5.4.zip",
+                    "type": "zip"
+                }
+            }
+        }
+    ],
+    "require": {
+        "components/normalize.css": "^3.0",
+        "components/jqueryui": "^1",
+        "xdan/datetimepicker": "^2",
+        "datatables/datatables": "^1.10",
+        "twbs/bootstrap": "4.0.0-beta.2",
+	"smarty/smarty": "3.1.31"
+    },
+    "autoload": {
+        "classmap": ["lib/"]
+    }
+}

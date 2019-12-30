@@ -1,0 +1,73 @@
+{extends file="LmsWindowManager/BaseWindow.html"}
+    {block name=LmsWindowManagerHeader}
+    <script type="text/javascript" src="templates/LmsWindowManager/js/ProgressFunctions.js"> </script>
+        <script>
+            var fv_ids=Array();
+            var savefvparams='{$params}';
+            var p={
+                PercentDiv: 'savefvprogressall',
+                PercentClass : 'ProgressPercent',
+                PercentBar: true,
+                ProgressTimeDiv: 'savefvprogresstime',
+                ProgressTime: true,            
+            }
+            var Tel=new TimeRemained(p);
+            {foreach from=$ids item=item key=key}
+            fv_ids[{$key}]={$item};
+            {/foreach}
+            
+            var current_fvid=0;
+
+            SaveFVCancel=function()
+                {
+                    Tel.ClearTimeout(true);                
+                    document.getElementById('savefvprogressend').innerHTML='<B>Anulowano ('+current_fvid+')</B>';
+                    document.getElementById('{$lmsWindows.infoDiv}').innerHTML="<div class=alertLMS style='padding-top:7px;height:20px;width:99%'>Anulowano generowanie "+current_fvid+" z "+fv_ids.length+"</div>";        
+                }                
+            SaveFVone=function(mode)
+                {
+                    if(Tel.TimeOut)
+                        return;
+                    if(!mode)
+                        document.getElementById('savefvprogressend').innerHTML='<a class=buttonc href=javascript:SaveFVCancel();>Anuluj</a>'                        
+
+                    Tel.ClearTimeout(false);                
+                    Tel.Time();
+                                            
+                    if(current_fvid<=fv_ids.length)
+                        {
+                            Tel.ProgressTimeoutFunc('{$lmsWindows.infoDiv}','savefvprogressend');
+                            Tel.Show(current_fvid,fv_ids.length);
+                            document.getElementById('savefvprogressone').innerHTML=fv_ids[current_fvid]+" ("+(current_fvid-0+1)+" z "+(fv_ids.length)+")";
+                            xajax_SaveFV(fv_ids[current_fvid],savefvparams,current_fvid);
+                        }
+                    if(current_fvid==fv_ids.length)
+                        {
+                            document.getElementById('savefvprogressend').innerHTML='<B>Zakończono ('+current_fvid+')</B>';
+                            document.getElementById('savefvprogressone').innerHTML='---';
+                      }
+                    current_fvid++;
+                }
+        </script>
+    {/block}
+    
+    {block name=LmsWindowManagerBody}
+    <TR><TD>
+    Rekordów: {$ids|@count}<BR>
+    Aktualnie generowane ID: <span id=savefvprogressone>---</span><BR>
+    postęp: <B><span id=savefvprogressall>0</span>%</B><BR>
+    <div id=savefvprogressallbar></div>
+    czas do zakończenia: <span id=savefvprogresstime>---</span>
+    </TD>
+    </TR>    
+    {/block}
+
+    {block name=LmsWindowManagerTfoot}
+        <TFOOT>
+        <TR class="lmswtitle">
+            <TD colspan=2 class="text-left" style='padding:10px'>
+                <div id=savefvprogressend class='text-center'><a class=buttonc href=javascript:void(); onclick="SaveFVone(false);">Generuj</a></div>
+            </TD>
+        </TR>
+        </TFOOT>
+    {/block}
